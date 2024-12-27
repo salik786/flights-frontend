@@ -1,0 +1,50 @@
+.histogram-container {
+    margin: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .histogram {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  .histogram-bar {
+    flex: 1;
+    max-width: 70px;
+    text-align: center;
+    margin: 0 5px;
+  }
+  
+  .hour-label {
+    font-size: 12px;
+    margin-bottom: 5px;
+  }
+  
+  .bar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 150px;
+  }
+  
+  .bar {
+    width: 20px;
+    margin: 2px 0;
+  }
+  
+  .bar.t2 {
+    background-color: #3498db;
+  }
+  
+  .bar.t3 {
+    background-color: #e74c3c;
+  }
+  
+  .bar.total {
+    background-color: #2ecc71;
+  }
+  
