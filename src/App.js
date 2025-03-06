@@ -13,7 +13,7 @@ const App = () => {
   const fetchFlightData = (date, flightType) => {
     setLoading(true);  // Show loading spinner
     console.log(`Fetching data for date: ${date} and flight type: ${flightType}`);
-    fetch(`https://flight-backend-weld.vercel.app/api/flights?date=${date}&flightType=${flightType}`)
+    fetch(`https://flights-data-hac2.onrender.com/api/flights?date=${date}&flightType=${flightType}`)
       
       .then((response) => response.json())
       .then((data) => {
