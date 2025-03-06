@@ -6,7 +6,7 @@ const Dashboard = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/flights')
+        fetch('https://flights-data-hac2.onrender.com/api/flights')
             .then(res => res.json())
             .then(data => {
                 setFlightData(data);
