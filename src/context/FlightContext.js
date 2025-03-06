@@ -13,7 +13,7 @@ export const FlightProvider = ({ children }) => {
     const [flightData, setFlightData] = useState(null);
     const [selectedDate, setSelectedDate] = useState('today');
     const [selectedFlightType, setSelectedFlightType] = useState('domestic');
-    const [flightDirection, setFlightDirection] = useState('departure');
+    const [flightDirection, setFlightDirection] = useState('arrival');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 

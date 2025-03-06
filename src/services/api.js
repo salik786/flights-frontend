@@ -48,7 +48,7 @@ apiClient.interceptors.response.use(
 // Flight data API calls
 export const flightService = {
     // Get flight data based on date and flight type
-    getFlightData: async (date, flightType, flightDirection = 'departure') => {
+    getFlightData: async (date, flightType, flightDirection = 'arrival') => {
         try {
             return await apiClient.get('/api/flights', {
                 params: { date, flightType, flightDirection }
