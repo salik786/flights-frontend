@@ -1,0 +1,135 @@
+/* src/Dashboard/flightStats.css */
+.flight-stats-container {
+    margin-bottom: 20px;
+    background: white;
+    border-radius: 8px;
+    padding: 12px 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  .flight-stats-container h2 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    color: #333;
+    font-size: 1.1rem;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 8px;
+  }
+  
+  .stats-cards {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  
+  .stat-card {
+    flex: 1;
+    min-width: 140px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  }
+  
+  .stat-card.on-time {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e1f5fe 100%);
+    border-left: 3px solid #4CAF50;
+  }
+  
+  .stat-card.delayed {
+    background: linear-gradient(135deg, #fff9c4 0%, #fff59d 100%);
+    border-left: 3px solid #FFC107;
+  }
+  
+  .stat-card.cancelled {
+    background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+    border-left: 3px solid #F44336;
+  }
+  
+  .stat-icon {
+    font-size: 16px;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .on-time .stat-icon {
+    background: rgba(76, 175, 80, 0.2);
+    color: #4CAF50;
+  }
+  
+  .delayed .stat-icon {
+    background: rgba(255, 193, 7, 0.2);
+    color: #FFC107;
+  }
+  
+  .cancelled .stat-icon {
+    background: rgba(244, 67, 54, 0.2);
+    color: #F44336;
+  }
+  
+  .stat-content {
+    flex: 1;
+  }
+  
+  .stat-content h3 {
+    margin: 0 0 3px 0;
+    font-size: 12px;
+    font-weight: 500;
+    color: #666;
+  }
+  
+  .stat-number {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 0 5px 0;
+    color: #333;
+  }
+  
+  .stat-progress {
+    height: 4px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 2px;
+    margin-bottom: 3px;
+    overflow: hidden;
+  }
+  
+  .on-time .progress-bar {
+    background-color: #4CAF50;
+    height: 100%;
+  }
+  
+  .delayed .progress-bar {
+    background-color: #FFC107;
+    height: 100%;
+  }
+  
+  .cancelled .progress-bar {
+    background-color: #F44336;
+    height: 100%;
+  }
+  
+  .stat-percent {
+    font-size: 11px;
+    font-weight: 500;
+    color: #666;
+    margin: 0;
+    text-align: right;
+  }
+  
+  @media (max-width: 768px) {
+    .stat-card {
+      flex: 100%;
+    }
+  }

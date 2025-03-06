@@ -1,53 +1,70 @@
-import React from "react";
+// src/Dashboard/flightStats.js
+import React from 'react';
+import PropTypes from 'prop-types';
+import './flightStats.css';
 
 const FlightStats = ({ flightData }) => {
-    // Check if flightData exists and flight_statuses is not undefined
-    const flightStatus = flightData || {};  // Default to empty object if undefined
-    console.log("flightstatus", flightData)
-    const { on_time = 0, cancelled = 0, delayed = 0 } = flightStatus;  // Default values
+    if (!flightData) return null;
+
+    const { on_time = 0, delayed = 0, cancelled = 0 } = flightData;
+    const total = on_time + delayed + cancelled;
+
+    // Calculate percentages
+    const onTimePercent = total > 0 ? Math.round((on_time / total) * 100) : 0;
+    const delayedPercent = total > 0 ? Math.round((delayed / total) * 100) : 0;
+    const cancelledPercent = total > 0 ? Math.round((cancelled / total) * 100) : 0;
 
     return (
-        <div style={styles.container}>
-            {/* <div style={styles.statBox}>
-                <h3 style={styles.heading}>On-Time Flights</h3>
-                <p style={styles.count}>{on_time}</p>
-            </div> */}
-            <div style={styles.statBox}>
-                <h3 style={styles.heading}>Total Flights </h3>
-                <p style={styles.count}>{delayed}</p>
-            </div>
-            <div style={styles.statBox}>
-                <h3 style={styles.heading}>Cancelled Flights</h3>
-                <p style={styles.count}>{cancelled}</p>
+        <div className="flight-stats-container">
+            <h2>Flight Status Summary</h2>
+
+            <div className="stats-cards">
+                <div className="stat-card on-time">
+                    <div className="stat-icon">✓</div>
+                    <div className="stat-content">
+                        <h3>On Time</h3>
+                        <p className="stat-number">{on_time}</p>
+                        <div className="stat-progress">
+                            <div className="progress-bar" style={{ width: `${onTimePercent}%` }}></div>
+                        </div>
+                        <p className="stat-percent">{onTimePercent}%</p>
+                    </div>
+                </div>
+
+                <div className="stat-card delayed">
+                    <div className="stat-icon">⏱</div>
+                    <div className="stat-content">
+                        <h3>Delayed</h3>
+                        <p className="stat-number">{delayed}</p>
+                        <div className="stat-progress">
+                            <div className="progress-bar" style={{ width: `${delayedPercent}%` }}></div>
+                        </div>
+                        <p className="stat-percent">{delayedPercent}%</p>
+                    </div>
+                </div>
+
+                <div className="stat-card cancelled">
+                    <div className="stat-icon">✗</div>
+                    <div className="stat-content">
+                        <h3>Cancelled</h3>
+                        <p className="stat-number">{cancelled}</p>
+                        <div className="stat-progress">
+                            <div className="progress-bar" style={{ width: `${cancelledPercent}%` }}></div>
+                        </div>
+                        <p className="stat-percent">{cancelledPercent}%</p>
+                    </div>
+                </div>
             </div>
         </div>
     );
 };
 
-const styles = {
-    container: {
-        display: "flex",
-        justifyContent: "space-around",
-        margin: "20px 0",
-        padding: "5px",
-        backgroundColor: "#f5f5f5",
-        borderRadius: "8px",
-        boxShadow: "0 4px 8px 5px rgba(0, 0, 0, 12%)",
-    },
-    statBox: {
-        textAlign: "center",
-        padding: "10px",
-    },
-    heading: {
-        fontSize: "1.2em",
-        marginBottom: "10px",
-        color: "#333",
-    },
-    count: {
-        fontSize: "1.5em",
-        fontWeight: "bold",
-        color: "#007bff",
-    },
+FlightStats.propTypes = {
+    flightData: PropTypes.shape({
+        on_time: PropTypes.number,
+        delayed: PropTypes.number,
+        cancelled: PropTypes.number
+    })
 };
 
 export default FlightStats;
