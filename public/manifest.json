@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Flight Dashboard",
+  "name": "Sydney Airport Flight Dashboard",
+  "description": "Track flight patterns and statistics for Sydney Airport",
   "icons": [
     {
       "src": "favicon.ico",

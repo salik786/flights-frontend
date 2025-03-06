@@ -1,6 +1,7 @@
 {
-  "name": "flight-heatmap",
-  "version": "0.1.0",
+  "name": "sydney-airport-dashboard",
+  "version": "1.0.0",
+  "description": "Flight data visualization dashboard for Sydney Airport",
   "private": true,
   "dependencies": {
     "axios": "^1.8.1",
