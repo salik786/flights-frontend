@@ -1,12 +1,15 @@
 /* src/components/Navbar.css */
 .main-navbar {
   background: white;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0px 20px rgba(224, 231, 239, 0.896);
   border-radius: 12px;
-  margin-bottom: 24px;
-  position: sticky;
+  margin-bottom: 15px;
+  /* position: sticky; */
   top: 0;
   z-index: 100;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
 }
 
 .navbar-container {
@@ -114,7 +117,7 @@
   transform: translateX(-50%);
   width: 6px;
   height: 6px;
-  background: #4facfe;
+  /* background: #4facfe; */
   border-radius: 50%;
 }
 
@@ -221,4 +224,17 @@
   .navbar-items {
     width: 80%;
   }
+}
+body, html {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Ensure content fits within viewport */
+.app-container,
+.content-container {
+  max-width: 100%;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
 }
