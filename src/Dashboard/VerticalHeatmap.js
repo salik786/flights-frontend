@@ -10,27 +10,73 @@ import {
     Legend,
 } from "chart.js";
 
-// Completely reset Chart.js before registering components
-// This will remove any existing plugins
-if (ChartJS.helpers && ChartJS.helpers.each && ChartJS.registry && ChartJS.registry.plugins) {
-    // Try to remove all plugins
-    const plugins = [...ChartJS.registry.plugins.items];
-    plugins.forEach(plugin => {
-        try {
-            ChartJS.unregister(plugin);
-        } catch (e) {
-            // Ignore errors
-        }
-    });
-}
-
-// Register only the components we need
+// Register required Chart.js components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-// If you have access to import the Chart class directly, you could do a reset like:
-// Chart.defaults.plugins.datalabels = { display: false };
+// This plugin will definitely work - we're making it as simple as possible
+const totalLabelsPlugin = {
+    id: 'totalLabels',
+    afterDatasetsDraw: function (chart) {
+        const ctx = chart.ctx;
 
-const Heatmap = ({ flightData, selectedFlightType }) => {
+        chart.data.datasets.forEach((dataset, datasetIndex) => {
+            // For stacked charts, only process the last dataset (T3)
+            // For single dataset charts, process the only dataset
+            const isLastDataset = (datasetIndex === chart.data.datasets.length - 1);
+            if (!isLastDataset && chart.data.datasets.length > 1) {
+                return;
+            }
+
+            const meta = chart.getDatasetMeta(datasetIndex);
+
+            // Skip if this dataset is hidden
+            if (meta.hidden) {
+                return;
+            }
+
+            meta.data.forEach((element, index) => {
+                let value;
+
+                // For stacked charts, calculate the total
+                if (chart.data.datasets.length > 1) {
+                    value = 0;
+                    chart.data.datasets.forEach(ds => {
+                        value += ds.data[index] || 0;
+                    });
+                } else {
+                    value = dataset.data[index];
+                }
+
+                // Only display if there's an actual value
+                if (value > 0) {
+                    // For vertical chart
+                    const fontSize = 10;
+                    ctx.font = 'bold ' + fontSize + 'px Arial';
+                    ctx.fillStyle = 'black';
+                    ctx.textAlign = 'left';
+                    ctx.textBaseline = 'middle';
+
+                    const x = element.x + 10;  // Position to the right of the bar
+                    const y = element.y;       // Centered vertically
+
+                    // Add a white background
+                    const textWidth = ctx.measureText(value).width;
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                    ctx.fillRect(x - 2, y - 8, textWidth + 4, 16);
+
+                    // Draw the text
+                    ctx.fillStyle = 'black';
+                    ctx.fillText(value, x, y);
+                }
+            });
+        });
+    }
+};
+
+// Register the plugin globally once
+ChartJS.register(totalLabelsPlugin);
+
+const VerticalHeatmap = ({ flightData, selectedFlightType }) => {
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
     // Handle window resize
@@ -113,15 +159,10 @@ const Heatmap = ({ flightData, selectedFlightType }) => {
     };
 
     const options = {
+        indexAxis: 'y', // This makes the chart vertical
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-            // Explicitly disable any possible label plugins
-            datalabels: { display: false },
-            labels: false,
-            outlabels: false,
-            totalLabels: false,
-            totalLabelsHorizontal: false,
             legend: {
                 position: windowWidth < 768 ? "bottom" : "top",
                 labels: {
@@ -185,7 +226,7 @@ const Heatmap = ({ flightData, selectedFlightType }) => {
             }
         },
         scales: {
-            x: {
+            y: { // This is now the horizontal axis (labels)
                 title: {
                     display: windowWidth >= 768,
                     text: "Time Intervals",
@@ -198,14 +239,13 @@ const Heatmap = ({ flightData, selectedFlightType }) => {
                     font: {
                         size: windowWidth < 768 ? 9 : 11,
                     },
-                    maxRotation: windowWidth < 768 ? 90 : 0,
-                    minRotation: windowWidth < 768 ? 45 : 0,
+                    // No need to rotate as it's vertical now
                 },
                 grid: {
                     display: windowWidth >= 480,
                 }
             },
-            y: {
+            x: { // This is now the vertical axis (values)
                 title: {
                     display: windowWidth >= 768,
                     text: "Number of Flights",
@@ -224,10 +264,11 @@ const Heatmap = ({ flightData, selectedFlightType }) => {
         }
     };
 
-    // Dynamic height based on screen size
-    const chartHeight = windowWidth < 480 ? '400px' :
-        windowWidth < 768 ? '500px' : '600px';
+    // Dynamic height for vertical chart - needs to be taller
+    const chartHeight = windowWidth < 480 ? '600px' :
+        windowWidth < 768 ? '700px' : '800px';
 
+    // Use CSS class for responsive styling
     return (
         <div className="heatmap-container">
             <div className="heatmap-chart" style={{
@@ -236,10 +277,10 @@ const Heatmap = ({ flightData, selectedFlightType }) => {
                 maxWidth: '1600px',
                 margin: '0 auto'
             }}>
-                <Bar data={data} options={options} key={Math.random()} />
+                <Bar data={data} options={options} />
             </div>
         </div>
     );
 };
 
-export default Heatmap;
+export default VerticalHeatmap;

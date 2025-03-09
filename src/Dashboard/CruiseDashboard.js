@@ -24,8 +24,16 @@ const CruiseDashboard = () => {
 
                 // Get main terminal cruises (OPT and WBCT only)
                 const mainTerminalCruises = await cruiseService.getMainTerminalCruises(currentMonth, currentYear);
-                setCruises(mainTerminalCruises);
-                setFilteredCruises(mainTerminalCruises);
+
+                // Filter out past cruises
+                const now = new Date();
+                const currentCruises = mainTerminalCruises.filter(cruise => {
+                    const cruiseDate = new Date(cruise.departureTime);
+                    return cruiseDate >= now;
+                });
+
+                setCruises(currentCruises);
+                setFilteredCruises(currentCruises);
 
                 setLoading(false);
             } catch (err) {
@@ -143,7 +151,7 @@ const CruiseDashboard = () => {
 
                 <div className="no-cruises-container">
                     <div className="no-cruises-message">
-                        No cruises found for the selected terminal.
+                        No upcoming cruises found for the selected terminal.
                     </div>
                 </div>
             </div>
@@ -154,6 +162,9 @@ const CruiseDashboard = () => {
     const sortedCruises = [...filteredCruises].sort((a, b) => {
         return new Date(a.arrivalTime) - new Date(b.arrivalTime);
     });
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Reset time to start of day for accurate comparison
 
     return (
         <div className="cruise-dashboard">
@@ -215,7 +226,7 @@ const CruiseDashboard = () => {
 
             <div className="cruise-timeline-container">
                 <div className="timeline-header">
-                    <h3>March 2025 Cruise Schedule</h3>
+                    <h3>Upcoming Cruises</h3>
                     <div className="view-toggle">
                         <button
                             className={`view-toggle-btn ${viewMode === 'list' ? 'active' : ''}`}
@@ -234,101 +245,117 @@ const CruiseDashboard = () => {
 
                 {viewMode === 'list' ? (
                     <div className="cruise-timeline">
-                        {sortedCruises.map((cruise, index) => (
-                            <div
-                                key={`${cruise.vesselName}-${index}`}
-                                className={`timeline-item ${selectedShip === cruise.vesselName ? 'selected' : ''}`}
-                                onClick={() => handleShipSelect(cruise.vesselName)}
-                            >
+                        {sortedCruises.map((cruise, index) => {
+                            const cruiseDate = new Date(cruise.arrivalTime);
+                            cruiseDate.setHours(0, 0, 0, 0); // Reset time for date comparison
+
+                            const isToday = cruiseDate.getTime() === today.getTime();
+
+                            return (
                                 <div
-                                    className="timeline-marker"
-                                    style={{ backgroundColor: getCruiseLineColor(cruise.cruiseLine) }}
+                                    key={`${cruise.vesselName}-${index}`}
+                                    className={`timeline-item ${selectedShip === cruise.vesselName ? 'selected' : ''} ${isToday ? 'today' : ''}`}
+                                    onClick={() => handleShipSelect(cruise.vesselName)}
                                 >
-                                    <span>{cruise.vesselName.charAt(0)}</span>
-                                </div>
-                                <div className="timeline-content">
-                                    <div className="timeline-header-content">
-                                        <h4 className="ship-name">{cruise.vesselName}</h4>
-                                        <span className="terminal-badge">{cruise.berthCode}</span>
+                                    {isToday && <div className="today-indicator">Today</div>}
+                                    <div
+                                        className="timeline-marker"
+                                        style={{ backgroundColor: getCruiseLineColor(cruise.cruiseLine) }}
+                                    >
+                                        <span>{cruise.vesselName.charAt(0)}</span>
                                     </div>
-                                    <div className="timeline-details">
-                                        <div className="detail-item">
-                                            <span className="detail-icon">📅</span>
-                                            <span className="detail-text">{formatDate(cruise.arrivalTime)}</span>
+                                    <div className="timeline-content">
+                                        <div className="timeline-header-content">
+                                            <h4 className="ship-name">{cruise.vesselName}</h4>
+                                            <span className="terminal-badge">{cruise.berthCode}</span>
                                         </div>
-                                        <div className="detail-item">
-                                            <span className="detail-icon">🕒</span>
-                                            <span className="detail-text">
-                                                {cruiseService.extractTime(cruise.arrivalTime)} - {cruiseService.extractTime(cruise.departureTime)}
-                                            </span>
-                                        </div>
-                                        <div className="detail-item">
-                                            <span className="detail-icon">⏱️</span>
-                                            <span className="detail-text">
-                                                {cruiseService.calculateDuration(cruise.arrivalTime, cruise.departureTime)}
-                                            </span>
-                                        </div>
-                                        <div className="detail-item">
-                                            <span className="detail-icon">🏢</span>
-                                            <span className="detail-text">{cruise.berth}</span>
-                                        </div>
-                                        <div className="detail-item cruise-line">
-                                            <span
-                                                className="cruise-line-indicator"
-                                                style={{ backgroundColor: getCruiseLineColor(cruise.cruiseLine) }}
-                                            ></span>
-                                            <span className="detail-text">{cruise.cruiseLine}</span>
+                                        <div className="timeline-details">
+                                            <div className="detail-item">
+                                                <span className="detail-icon">📅</span>
+                                                <span className="detail-text">{formatDate(cruise.arrivalTime)}</span>
+                                            </div>
+                                            <div className="detail-item">
+                                                <span className="detail-icon">🕒</span>
+                                                <span className="detail-text">
+                                                    {cruiseService.extractTime(cruise.arrivalTime)} - {cruiseService.extractTime(cruise.departureTime)}
+                                                </span>
+                                            </div>
+                                            <div className="detail-item">
+                                                <span className="detail-icon">⏱️</span>
+                                                <span className="detail-text">
+                                                    {cruiseService.calculateDuration(cruise.arrivalTime, cruise.departureTime)}
+                                                </span>
+                                            </div>
+                                            <div className="detail-item">
+                                                <span className="detail-icon">🏢</span>
+                                                <span className="detail-text">{cruise.berth}</span>
+                                            </div>
+                                            <div className="detail-item cruise-line">
+                                                <span
+                                                    className="cruise-line-indicator"
+                                                    style={{ backgroundColor: getCruiseLineColor(cruise.cruiseLine) }}
+                                                ></span>
+                                                <span className="detail-text">{cruise.cruiseLine}</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 ) : (
                     <div className="cruise-cards">
-                        {sortedCruises.map((cruise, index) => (
-                            <div
-                                key={`${cruise.vesselName}-${index}`}
-                                className={`cruise-card ${selectedShip === cruise.vesselName ? 'selected' : ''}`}
-                                onClick={() => handleShipSelect(cruise.vesselName)}
-                            >
+                        {sortedCruises.map((cruise, index) => {
+                            const cruiseDate = new Date(cruise.arrivalTime);
+                            cruiseDate.setHours(0, 0, 0, 0); // Reset time for date comparison
+
+                            const isToday = cruiseDate.getTime() === today.getTime();
+
+                            return (
                                 <div
-                                    className="cruise-card-header"
-                                    style={{ backgroundColor: getCruiseLineColor(cruise.cruiseLine) }}
+                                    key={`${cruise.vesselName}-${index}`}
+                                    className={`cruise-card ${selectedShip === cruise.vesselName ? 'selected' : ''} ${isToday ? 'today' : ''}`}
+                                    onClick={() => handleShipSelect(cruise.vesselName)}
                                 >
-                                    <h4>{cruise.vesselName}</h4>
-                                    <span className="terminal-badge">{cruise.berthCode}</span>
+                                    {isToday && <div className="today-indicator">Today</div>}
+                                    <div
+                                        className="cruise-card-header"
+                                        style={{ backgroundColor: getCruiseLineColor(cruise.cruiseLine) }}
+                                    >
+                                        <h4>{cruise.vesselName}</h4>
+                                        <span className="terminal-badge">{cruise.berthCode}</span>
+                                    </div>
+                                    <div className="cruise-card-body">
+                                        <div className="cruise-info">
+                                            <span className="info-label">Date:</span>
+                                            <span className="info-value">
+                                                {formatDate(cruise.arrivalTime)}
+                                            </span>
+                                        </div>
+                                        <div className="cruise-info">
+                                            <span className="info-label">Time:</span>
+                                            <span className="info-value">
+                                                {cruiseService.extractTime(cruise.arrivalTime)} - {cruiseService.extractTime(cruise.departureTime)}
+                                            </span>
+                                        </div>
+                                        <div className="cruise-info">
+                                            <span className="info-label">Duration:</span>
+                                            <span className="info-value">
+                                                {cruiseService.calculateDuration(cruise.arrivalTime, cruise.departureTime)}
+                                            </span>
+                                        </div>
+                                        <div className="cruise-info">
+                                            <span className="info-label">Cruise Line:</span>
+                                            <span className="info-value">{cruise.cruiseLine}</span>
+                                        </div>
+                                        <div className="cruise-info">
+                                            <span className="info-label">Terminal:</span>
+                                            <span className="info-value">{cruise.berth}</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="cruise-card-body">
-                                    <div className="cruise-info">
-                                        <span className="info-label">Date:</span>
-                                        <span className="info-value">
-                                            {formatDate(cruise.arrivalTime)}
-                                        </span>
-                                    </div>
-                                    <div className="cruise-info">
-                                        <span className="info-label">Time:</span>
-                                        <span className="info-value">
-                                            {cruiseService.extractTime(cruise.arrivalTime)} - {cruiseService.extractTime(cruise.departureTime)}
-                                        </span>
-                                    </div>
-                                    <div className="cruise-info">
-                                        <span className="info-label">Duration:</span>
-                                        <span className="info-value">
-                                            {cruiseService.calculateDuration(cruise.arrivalTime, cruise.departureTime)}
-                                        </span>
-                                    </div>
-                                    <div className="cruise-info">
-                                        <span className="info-label">Cruise Line:</span>
-                                        <span className="info-value">{cruise.cruiseLine}</span>
-                                    </div>
-                                    <div className="cruise-info">
-                                        <span className="info-label">Terminal:</span>
-                                        <span className="info-value">{cruise.berth}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 )}
             </div>

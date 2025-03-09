@@ -7,6 +7,7 @@ import LoadingIndicator from './components/LoadingIndicator';
 import Heatmap from './Dashboard/domheatmap';
 import CruiseDashboard from './Dashboard/CruiseDashboard';
 import './App.css';
+import ChartToggle from './Dashboard/ChartToggle';
 
 const App = () => {
   const [activeTab, setActiveTab] = useState('flights');
@@ -109,7 +110,7 @@ const App = () => {
                   </div>
                 </div>
 
-                <Heatmap
+                <ChartToggle
                   flightData={flightData}
                   selectedFlightType={selectedFlightType}
                 />
@@ -128,7 +129,7 @@ const App = () => {
 
       {/* Footer */}
       <footer className="app-footer">
-        <p>Powered by <a href="#" rel="noopener noreferrer">Sydney Transport API</a> | <a href="#" rel="noopener noreferrer">Developed by Your Name</a></p>
+        <p>Powered by <a href="#" rel="noopener noreferrer">Sydney Transport API</a> | <a href="#" rel="noopener noreferrer">Developed by Salik Saleem</a></p>
       </footer>
     </div>
   );

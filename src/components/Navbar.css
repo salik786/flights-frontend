@@ -1,240 +1,192 @@
 /* src/components/Navbar.css */
 .main-navbar {
-  background: white;
-  box-shadow: 0 0px 20px rgba(224, 231, 239, 0.896);
-  border-radius: 12px;
-  margin-bottom: 15px;
-  /* position: sticky; */
+  background: linear-gradient(90deg, #153a5b 0%, #083b3e 100%);
+  color: white;
+  position: sticky;
   top: 0;
-  z-index: 100;
-  overflow-x: hidden;
-  width: 100%;
-  max-width: 100%;
+  margin-bottom: 10px;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .navbar-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 24px;
-  max-width: 1400px;
+  padding: 0 20px;
+  max-width: 1600px;
   margin: 0 auto;
+  height: 60px;
 }
 
 .navbar-logo {
   display: flex;
   align-items: center;
-  gap: 16px;
 }
 
 .logo-icon {
+  margin-right: 10px;
+  font-size: 1.2rem;
   display: flex;
   align-items: center;
-  justify-content: center;
-  position: relative;
-  height: 40px;
-  width: 40px;
 }
 
 .logo-plane, .logo-ship {
-  position: absolute;
-  font-size: 24px;
-  transition: all 0.3s ease;
-}
-
-.logo-plane {
-  transform: translateX(-4px);
-}
-
-.logo-ship {
-  transform: translateX(4px);
-}
-
-.navbar-logo:hover .logo-plane {
-  transform: translateX(-12px) translateY(-6px) rotate(-15deg);
-}
-
-.navbar-logo:hover .logo-ship {
-  transform: translateX(12px) translateY(6px) rotate(15deg);
+  margin: 0 2px;
 }
 
 .logo-text {
-  margin: 0;
-  font-size: 1.6rem;
+  font-size: 1.2rem;
   font-weight: 600;
-  color: #333;
-  background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  margin: 0;
 }
 
 .navbar-items {
   display: flex;
-  gap: 20px;
+  align-items: center;
 }
 
 .nav-item {
   display: flex;
   align-items: center;
-  padding: 10px 18px;
-  border-radius: 10px;
+  margin-left: 15px;
+  padding: 8px 15px;
+  border-radius: 4px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  position: relative;
-  gap: 12px;
+  transition: background-color 0.2s;
 }
 
 .nav-item:hover {
-  background: #f5f9ff;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .nav-item.active {
-  background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
-  color: white;
-  box-shadow: 0 4px 12px rgba(79, 172, 254, 0.3);
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .nav-icon {
-  font-size: 20px;
-  transition: transform 0.2s ease;
-}
-
-.nav-item:hover .nav-icon {
-  transform: scale(1.2);
+  margin-right: 8px;
+  font-size: 1.1rem;
 }
 
 .nav-text {
   font-weight: 500;
-  font-size: 16px;
 }
 
-.nav-item.active::after {
-  content: '';
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 6px;
-  height: 6px;
-  /* background: #4facfe; */
-  border-radius: 50%;
-}
-
-/* Mobile menu toggle */
+/* Menu toggle for mobile */
 .menu-toggle {
   display: none;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 30px;
-  height: 21px;
   background: transparent;
   border: none;
   cursor: pointer;
-  padding: 0;
+  padding: 10px;
+  z-index: 1001;
 }
 
 .menu-toggle span {
   display: block;
+  width: 25px;
   height: 3px;
-  width: 100%;
-  background-color: #333;
+  margin: 5px 0;
+  position: relative;
+  background-color: white;
   border-radius: 3px;
+  transform-origin: center;
   transition: all 0.3s ease;
 }
 
-.menu-toggle.active span:first-child {
-  transform: translateY(9px) rotate(45deg);
+.menu-toggle.active span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
 }
 
 .menu-toggle.active span:nth-child(2) {
   opacity: 0;
 }
 
-.menu-toggle.active span:last-child {
-  transform: translateY(-9px) rotate(-45deg);
+.menu-toggle.active span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
 }
 
-/* Mobile responsiveness */
+/* Navbar overlay for mobile */
+.navbar-overlay {
+  display: none;
+}
+
+/* Mobile styles */
 @media (max-width: 768px) {
-  .navbar-container {
-    padding: 12px 16px;
-  }
-  
-  .logo-text {
-    font-size: 1.2rem;
-  }
-  
-  .logo-icon {
-    height: 32px;
-    width: 32px;
-  }
-  
-  .logo-plane, .logo-ship {
-    font-size: 18px;
-  }
-  
-  .menu-toggle {
-    display: flex;
-    z-index: 101;
-  }
-  
-  .navbar-items {
-    position: absolute;
-    top: 0;
-    right: -100%;
-    width: 70%;
-    height: 100vh;
-    flex-direction: column;
-    background: white;
-    padding: 80px 20px 20px;
-    transition: all 0.3s ease;
-    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-    z-index: 100;
-  }
-  
-  .navbar-items.open {
-    right: 0;
-  }
-  
-  .nav-item {
-    width: 100%;
-    justify-content: flex-start;
-  }
-  
-  .nav-item.active::after {
-    display: none;
-  }
-}
-
-@media (max-width: 480px) {
-  .navbar-logo {
-    gap: 8px;
-  }
-  
   .logo-text {
     font-size: 1rem;
   }
-  
-  .logo-icon {
-    height: 28px;
-    width: 28px;
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .navbar-overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 990;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
   }
   
+  .navbar-overlay.show {
+    opacity: 1;
+    visibility: visible;
+  }
+
   .navbar-items {
-    width: 80%;
+    position: fixed;
+    top: 0;
+    right: -280px;
+    height: 100vh;
+    width: 250px;
+    background-color: #fff;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+    flex-direction: column;
+    align-items: flex-start;
+    padding-top: 70px;
+    z-index: 1000;
+    transition: right 0.3s ease;
   }
-}
-body, html {
-  max-width: 100%;
-  overflow-x: hidden;
+
+  .navbar-items.open {
+    right: 0;
+  }
+
+  .nav-item {
+    margin: 0;
+    width: 100%;
+    padding: 15px 20px;
+    border-radius: 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    color: #333;
+  }
+
+  .nav-item.active {
+    background-color: rgba(79, 172, 254, 0.1);
+    color: #4facfe;
+  }
+  
+  .nav-icon {
+    font-size: 1.2rem;
+  }
 }
 
-/* Ensure content fits within viewport */
-.app-container,
-.content-container {
-  max-width: 100%;
-  overflow-x: hidden;
-  margin: 0;
-  padding: 0;
+/* Small screens */
+@media (max-width: 400px) {
+  .logo-text {
+    font-size: 0.9rem;
+  }
+  
+  .navbar-container {
+    padding: 0 10px;
+    height: 50px;
+  }
 }

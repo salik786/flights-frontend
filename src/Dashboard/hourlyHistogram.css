@@ -1,50 +1,113 @@
+/* hourlyHistogram.css */
 .histogram-container {
-    margin: 20px;
+  width: 100%;
+  background-color: white;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.histogram-container h2 {
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+  text-align: center;
+  color: #333;
+}
+
+.chart-wrapper {
+  position: relative;
+  height: 60vh;
+  min-height: 300px;
+  max-height: 600px;
+  width: 100%;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .histogram-container {
     padding: 10px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 5px;
   }
   
-  .histogram {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+  .histogram-container h2 {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
   }
   
-  .histogram-bar {
-    flex: 1;
-    max-width: 70px;
-    text-align: center;
-    margin: 0 5px;
+  .chart-wrapper {
+    height: 50vh;
+    min-height: 250px;
   }
-  
-  .hour-label {
-    font-size: 12px;
-    margin-bottom: 5px;
-  }
-  
-  .bar-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 150px;
-  }
-  
-  .bar {
-    width: 20px;
-    margin: 2px 0;
-  }
-  
-  .bar.t2 {
-    background-color: #3498db;
-  }
-  
-  .bar.t3 {
-    background-color: #e74c3c;
-  }
-  
-  .bar.total {
-    background-color: #2ecc71;
-  }
-  
+}
+
+/* Legacy histogram styles (keeping for backwards compatibility) */
+.histogram {
+  display: flex;
+  align-items: flex-end;
+  height: 300px;
+  overflow-x: auto;
+  padding-bottom: 30px;
+}
+
+.histogram-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 10px;
+  min-width: 60px;
+}
+
+.hour-label {
+  margin-top: 5px;
+  font-size: 12px;
+  transform: rotate(45deg);
+  transform-origin: top left;
+  white-space: nowrap;
+}
+
+.bar-container {
+  display: flex;
+  align-items: flex-end;
+  height: 100%;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.bar {
+  width: 15px;
+  margin: 0 2px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.bar.t2 {
+  background-color: rgba(75, 192, 192, 0.8);
+}
+
+.bar.t3 {
+  background-color: rgba(255, 99, 132, 0.8);
+}
+
+.bar.total {
+  background-color: rgba(54, 162, 235, 0.5);
+  border: 1px solid rgba(54, 162, 235, 1);
+}
+
+/* Custom scrollbar for webkit browsers */
+.histogram::-webkit-scrollbar {
+  height: 8px;
+}
+
+.histogram::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.histogram::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.histogram::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
