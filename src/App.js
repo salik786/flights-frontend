@@ -6,6 +6,8 @@ import Filters from './components/Filters';
 import LoadingIndicator from './components/LoadingIndicator';
 import Heatmap from './Dashboard/domheatmap';
 import CruiseDashboard from './Dashboard/CruiseDashboard';
+import ModernTaxiHealth from './components/TaxiDriverHealth';
+import TaxiDriverRightsDuties from './components/TaxiDriverRightsDuties';
 import './App.css';
 import ChartToggle from './Dashboard/ChartToggle';
 
@@ -124,6 +126,26 @@ const App = () => {
         {/* Cruise Dashboard */}
         {activeTab === 'cruises' && (
           <CruiseDashboard />
+        )}
+
+        {/* Taxi Driver Health Tips */}
+        {activeTab === 'driver-health' && (
+          <div className="dashboard-wrapper">
+            <div className="dashboard-header">
+              <h2 className="dashboard-title">Taxi Driver Resources</h2>
+            </div>
+            <ModernTaxiHealth />
+          </div>
+        )}
+
+        {/* Taxi Driver Rights and Duties */}
+        {activeTab === 'driver-rights' && (
+          <div className="dashboard-wrapper">
+            <div className="dashboard-header">
+              <h2 className="dashboard-title">Taxi Driver Legal Information</h2>
+            </div>
+            <TaxiDriverRightsDuties />
+          </div>
         )}
       </div>
 

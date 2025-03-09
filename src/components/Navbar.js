@@ -84,6 +84,21 @@ const Navbar = ({ activeTab, setActiveTab }) => {
                         <div className="nav-icon">🚢</div>
                         <span className="nav-text">Cruise Schedule</span>
                     </div>
+                    <div
+                        className={`nav-item ${activeTab === 'driver-health' ? 'active' : ''}`}
+                        onClick={() => handleTabClick('driver-health')}
+                    >
+                        <div className="nav-icon">💪</div>
+                        <span className="nav-text">Driver Health</span>
+                    </div>
+                    <div
+                        className={`nav-item ${activeTab === 'driver-rights' ? 'active' : ''}`}
+                        onClick={() => handleTabClick('driver-rights')}
+                    >
+                        <div className="nav-icon">⚖️</div>
+                        <span className="nav-text">Driver Rights</span>
+                    </div>
+
                 </div>
             </div>
         </nav>
