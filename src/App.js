@@ -4,12 +4,13 @@ import { useFlightData } from './context/FlightContext';
 import Navbar from './components/Navbar';
 import Filters from './components/Filters';
 import LoadingIndicator from './components/LoadingIndicator';
-import Heatmap from './Dashboard/domheatmap';
+
 import CruiseDashboard from './Dashboard/CruiseDashboard';
 import ModernTaxiHealth from './components/TaxiDriverHealth';
 import TaxiDriverRightsDuties from './components/TaxiDriverRightsDuties';
 import './App.css';
 import ChartToggle from './Dashboard/ChartToggle';
+import WeeklyAnalyticsDashboard from './components/WeeklyAnalyticsDashboard';
 
 const App = () => {
   const [activeTab, setActiveTab] = useState('flights');
@@ -116,6 +117,7 @@ const App = () => {
                   flightData={flightData}
                   selectedFlightType={selectedFlightType}
                 />
+
               </div>
             ) : (
               !loading && !error && <p className="no-data-message">No data available for the selected filters.</p>
@@ -140,6 +142,7 @@ const App = () => {
 
         {/* Taxi Driver Rights and Duties */}
         {activeTab === 'driver-rights' && (
+
           <div className="dashboard-wrapper">
             <div className="dashboard-header">
               <h2 className="dashboard-title">Taxi Driver Legal Information</h2>
