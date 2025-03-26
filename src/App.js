@@ -1,9 +1,10 @@
 // src/App.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useFlightData } from './context/FlightContext';
 import Navbar from './components/Navbar';
 import Filters from './components/Filters';
 import LoadingIndicator from './components/LoadingIndicator';
+import ReactGA from 'react-ga4';
 
 import CruiseDashboard from './Dashboard/CruiseDashboard';
 import ModernTaxiHealth from './components/TaxiDriverHealth';
@@ -27,6 +28,49 @@ const App = () => {
     setFlightDirection,
     refreshData
   } = useFlightData();
+  useEffect(() => {
+    // Track initial page visit with more detailed logging
+    try {
+      ReactGA.send({ 
+        hitType: "pageview",
+        page: window.location.pathname,
+        title: 'Flight Heatmap Home'
+      });
+      
+    } catch (error) {
+      console.error('GA4 Tracking Error:', error);
+    }
+  }, []);
+  useEffect(() => {
+    // Track page view when tab changes
+    if (activeTab === 'cruises') {
+      ReactGA.event({
+        category: 'Page View',
+        action: 'Navigation',
+        label: 'Cruises'
+      });
+    } else if (activeTab === 'flights') {
+      ReactGA.event({
+        category: 'Page View',
+        action: 'Navigation',
+        label: 'Flights'
+      });
+    }
+      else if (activeTab === 'driver-rights') {
+        ReactGA.event({
+          category: 'Page View',
+          action: 'Navigation',
+          label: 'Driver Rights'
+        });
+    }else if (activeTab === 'driver-health') {
+      ReactGA.event({
+        category: 'Page View',
+        action: 'Navigation',
+        label: 'Driver Health'
+      });
+  }
+  }, [activeTab]);
+ 
 
   return (
     <div className="app-container">

@@ -480,7 +480,7 @@ const mockCruiseData = [
         "cruiseLine": "Celebrity Cruises Inc",
         "isRefresh": false,
         "portCode": "AUSYD"
-      },
+      }
 ];
 
 const cruiseService = {
@@ -513,7 +513,7 @@ const cruiseService = {
 
             return filteredData;
         } catch (error) {
-            console.error('Error fetching cruise data from API:', error);
+            // console.error('Error fetching cruise data from API:', error);
             console.log('Falling back to mock data...');
 
             // Filter mock data for the specified month
